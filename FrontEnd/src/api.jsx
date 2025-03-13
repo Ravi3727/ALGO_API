@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000/api/v1";
+const API_BASE_URL = "https://algo-api-vg1d.onrender.com/api/v1";
 
 export const binarySearchAPI = async (array, target) => {
   return axios.post(`${API_BASE_URL}/binary-search`, {
