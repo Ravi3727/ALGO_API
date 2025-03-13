@@ -5,6 +5,7 @@ const BFS = () => {
   const [graph, setGraph] = useState("");
   const [startNode, setStartNode] = useState("");
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Function to generate random input
   const generateRandomInput = () => {
@@ -27,10 +28,13 @@ const BFS = () => {
 
   const handleBFS = async () => {
     try {
+      setLoading(true);
       const response = await bfsAPI(graph, startNode);
       setResult(response.data);
+      setLoading(false);
     } catch (error) {
       setResult({ error: error.response?.data?.message || "API Error" });
+      setLoading(false);
     }
   };
 
@@ -52,9 +56,13 @@ const BFS = () => {
         onChange={(e) => setStartNode(e.target.value)}
       />
       <div className="flex gap-4">
-        <button onClick={handleBFS} className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white">
+       {loading ? 
+       <div>
+          <p className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white items-center text-center justify-center flex cursor-not-allowed">Running BFS...</p>
+       </div>
+       : <button onClick={handleBFS} className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white">
           Run BFS
-        </button>
+        </button>}
         <button onClick={generateRandomInput} className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white">
           Generate Random Input
         </button>

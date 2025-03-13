@@ -5,6 +5,7 @@ const QuickSort = () => {
   const [array, setArray] = useState("");
   const [result, setResult] = useState(null)
   const [target, setTarget] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const generateRandomInput = () => {
     const length = Math.floor(Math.random() * 10) + 5;
@@ -17,10 +18,13 @@ const QuickSort = () => {
 
   const handleSort = async () => {
     try {
+      setLoading(true);
       const response = await quickSortAPI(array);
       setResult(response.data);
+      setLoading(false);
     } catch (error) {
       setResult({ error: error.response?.data?.message || "API Error" });
+      setLoading(false);
     }
   };
 
@@ -38,9 +42,13 @@ const QuickSort = () => {
           onChange={(e) => setArray(e.target.value)}
         />
         <div className="flex gap-4">
-          <button onClick={handleSort} className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white">
-            Run Quick Sort
-          </button>
+          {loading ?
+            <div>
+              <p className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white items-center text-center justify-center flex cursor-not-allowed">Running QS...</p>
+            </div>
+            : <button onClick={handleSort} className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white">
+              Run Quick Sort
+            </button>}
           <button onClick={generateRandomInput} className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white">
             Generate Random Input
           </button>

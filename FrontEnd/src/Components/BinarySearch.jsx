@@ -5,10 +5,10 @@ const BinarySearch = () => {
     const [array, setArray] = useState("");
     const [target, setTarget] = useState("");
     const [result, setResult] = useState(null);
-
+    const [loading, setLoading] = useState(false);
     const generateRandomInput = () => {
-        const length = Math.floor(Math.random() * 10) + 5; 
-        const randomArray = Array.from({ length }, () => Math.floor(Math.random() * 100)); 
+        const length = Math.floor(Math.random() * 10) + 5;
+        const randomArray = Array.from({ length }, () => Math.floor(Math.random() * 100));
         randomArray.sort((a, b) => a - b);
         const randomTarget = randomArray[Math.floor(Math.random() * randomArray.length)];
 
@@ -18,10 +18,13 @@ const BinarySearch = () => {
 
     const handleSearch = async () => {
         try {
+            setLoading(true);
             const response = await binarySearchAPI(array, target);
             setResult(response.data);
+            setLoading(false);
         } catch (error) {
             setResult({ error: error.response?.data?.message || "API Error" });
+            setLoading(false);
         }
     };
 
@@ -43,9 +46,13 @@ const BinarySearch = () => {
                 onChange={(e) => setTarget(e.target.value)}
             />
             <div className="flex gap-4">
-                <button onClick={handleSearch} className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white">
-                    Run Binary Search
-                </button>
+                {loading ?
+                    <div>
+                        <p className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white items-center text-center justify-center flex cursor-not-allowed">Running BS...</p>
+                    </div>
+                    : <button onClick={handleSearch} className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white">
+                        Run Binary Search
+                    </button>}
                 <button onClick={generateRandomInput} className="p-2 w-48 h-16 rounded-lg border-2 bg-gray-800 text-white">
                     Generate Random Input
                 </button>
@@ -58,10 +65,10 @@ const BinarySearch = () => {
                     ) : (
                         <div>
                             {result.data.result !== -1 ? <p className="leading-8 font-semibold">Target found at index <span className="text-green-500 font-bold">{result.data.result}</span></p>
-                            : 
-                            <div>
-                                <p className="leading-8 font-semibold">Target not found</p>
-                            </div>
+                                :
+                                <div>
+                                    <p className="leading-8 font-semibold">Target not found</p>
+                                </div>
                             }
                             <p className="leading-8 font-semibold">{result.message}</p>
                         </div>
