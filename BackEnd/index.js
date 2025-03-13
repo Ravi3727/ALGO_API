@@ -8,7 +8,14 @@ const logRoutes = require("./routes/logRoutes");
 const app = express();
 connectDB();
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://algo-api-sigma.vercel.app",
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
