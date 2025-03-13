@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import BinarySearch from "./components/BinarySearch";
-import QuickSort from "./components/QuickSort";
-import BFS from "./components/BFS";
-import Logs from "./components/Logs";
+import BinarySearch from "./Components/BinarySearch";
+import QuickSort from "./Components/QuickSort";
+import BFS from "./Components/Bfs";
+import Logs from "./Components/Logs";
 
 function App() {
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("binary-search");
